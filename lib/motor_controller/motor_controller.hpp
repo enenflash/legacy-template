@@ -25,7 +25,7 @@ class MotorController {
 
     float rotation_const;
 
-    MotorController(float rotation_constant);
+    MotorController(float rotation_constant=1);
 
     private:
     array<float, 4> get_motor_speeds(float angle, float speed, float rotation);
