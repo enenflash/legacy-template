@@ -1,14 +1,13 @@
 #include "otos.hpp"
 
 void OTOS::set_up() {
-    Serial.println("OTOS SET UP");
+    if (this->sparkfun_otos.begin()) { Serial.println("OTOS Initialized"); }
+    else { Serial.println("No OTOs detected");}
     this->sparkfun_otos.calibrateImu();
-    Serial.println("OTOS check");
     this->sparkfun_otos.setLinearUnit(sfe_otos_linear_unit_t(0));
     sfe_otos_pose2d_t offset = { 0.04, 0.04, 0 };
     this->sparkfun_otos.setOffset(offset);
     this->sparkfun_otos.resetTracking();
-    Serial.println("OTOS Completed set up");
 }
 
 /* receives x and y in cm */
