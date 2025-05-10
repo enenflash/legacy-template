@@ -14,7 +14,9 @@
 void blinkLED();
 
 PositionSystem pos_sys;
-MotorController motor_ctrl;
+
+// 0.5 is how much the rotation is scaled compared to the movement
+MotorController motor_ctrl(0.5);
 
 void setup() {
   // put your setup code here, to run once:
@@ -37,6 +39,8 @@ void setup() {
   pinMode(BL_DIR, OUTPUT);
   pinMode(BR_DIR, OUTPUT);
 
+  motor_ctrl.stop_motors();
+
   // Ultrasonics (default no power)
   pinMode(UL_TRIG, OUTPUT);
   pinMode(UR_TRIG, OUTPUT);
@@ -49,10 +53,30 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("New loop");
-  pos_sys.update();
-  Serial.println(pos_sys.get_tilt());
-  motor_ctrl.run_motors(100, 0, 0);
+  Serial.println(".");
+  pos_sys.update(); // call every loop (it reads all the sensors)
+  // look at lib/position_system/position_system.hpp for all methods
+
+  float heading = pos_sys.get_heading(); // returns unit circle heading
+  Vector posv = pos_sys.get_posv(); // note this is a custom class (uppercase) the cpp vector is lowercase
+  // .display() returns std::string
+  String posv_str = String(posv.display().c_str()); // must convert from std::string to String (arduino)
+  
+  Serial.print(heading);
+  Serial.print(" ");
+  Serial.println(posv_str);
+
+  // convert unit circle heading to rotation
+  float rotation = heading;
+  if (rotation > 180) {
+    rotation -= 360;
+  }
+  rotation *= -1;
+  // idk where to put this code so it is here for now
+
+  motor_ctrl.run_motors(50, PI/2, rotation); // run motors 50 speed, angle 0 radians
+  // motor_ctrl.run_raw(-100, -100, 100, 100); // run motors raw
+  // motor_ctrl.stop_motors(); // stop all motors
   digitalWrite(DEBUG_LED, HIGH);
 }
 

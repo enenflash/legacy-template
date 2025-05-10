@@ -24,7 +24,7 @@ class PositionSystem {
     Vector opp_goal_posv;
     Vector own_goal_posv;
     Vector posv;
-    float tilt;
+    float heading;
 
     public:
     PositionSystem(bool use_otos=true, bool use_ult=false);
@@ -32,7 +32,7 @@ class PositionSystem {
     Vector get_relative_to(Vector other_posv);
 
     Vector get_posv();
-    float get_tilt();
+    float get_heading();
 
     Vector get_opp_goal_vec();
     Vector get_own_goal_vec();

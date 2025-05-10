@@ -10,7 +10,7 @@ PositionSystem::PositionSystem(bool use_otos, bool use_ult) {
     this->opp_goal_posv = Vector(0, 91.5);
     this->own_goal_posv = Vector(0, -91.5);
     this->posv = Vector(0, 0);
-    this->tilt = 0;
+    this->heading = 0;
 }
 
 bool PositionSystem::check_bno_ok() {
@@ -20,8 +20,8 @@ bool PositionSystem::check_bno_ok() {
 Vector PositionSystem::get_posv() {
     return this->posv;
 }
-float PositionSystem::get_tilt() {
-    return this->tilt;
+float PositionSystem::get_heading() {
+    return this->heading;
 }
 
 Vector PositionSystem::get_relative_to(Vector other_posv) {
@@ -45,11 +45,11 @@ void PositionSystem::update() {
     // get tilt from BNO or get tilt from parameter
     sensors_event_t event;
     this->bno.getEvent(&event);
-    this->tilt = event.orientation.x;
+    this->heading = 360-event.orientation.x;
 
     // could potentially implement a method that uses both ultrasonics and otos
     if (this->use_ult) {
-        this->ult_ps.update(this->tilt);
+        this->ult_ps.update(this->heading);
         this->posv = this->ult_ps.get_posv();
     }
     if (this->use_otos) {

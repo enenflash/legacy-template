@@ -1,2 +1,4 @@
 # legacy-template
-template project for Legacy (RCJ AU lightweight team)
+template project for Legacy (RCJ Australian lightweight team)
+
+Note: run "pio pkg update" to update all packages (SparkFun library requires latest version)
