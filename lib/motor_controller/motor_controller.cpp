@@ -9,23 +9,6 @@ MotorController::MotorController(float rotation_constant) {
     this->BR = Motor(BR_PWM, BR_DIR);
 }
 
-void MotorController::setup() {
-    pinMode(TL_PWM, OUTPUT);
-    pinMode(TR_PWM, OUTPUT);
-    pinMode(BL_PWM, OUTPUT);
-    pinMode(BR_PWM, OUTPUT);
-
-    analogWriteFrequency(TL_PWM, 20000);
-    analogWriteFrequency(TR_PWM, 20000);
-    analogWriteFrequency(BL_PWM, 20000);
-    analogWriteFrequency(BR_PWM, 20000);
-
-    pinMode(TL_DIR, OUTPUT);
-    pinMode(TR_DIR, OUTPUT);
-    pinMode(BL_DIR, OUTPUT);
-    pinMode(BR_DIR, OUTPUT);
-}
-
 array<float, 4> MotorController::get_motor_speeds(float speed, float angle, float rotation) {
     Vector mv = Vector::from_heading(angle, speed);
     float motor_ratio[4] = { 

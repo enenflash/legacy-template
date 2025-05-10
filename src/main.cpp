@@ -38,7 +38,6 @@ void setup() {
   pinMode(BL_DIR, OUTPUT);
   pinMode(BR_DIR, OUTPUT);
 
-  // motor_ctrl.setup(); // pin definitions
   // pos_sys.setup(); // pin definitions and bno055
 }
 
