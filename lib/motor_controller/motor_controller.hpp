@@ -31,7 +31,6 @@ class MotorController {
     array<float, 4> get_motor_speeds(float angle, float speed, float rotation);
 
     public:
-    void setup();
     void run_motors(float speed, float angle, float rotation);
     void run_raw(float tl_raw, float tr_raw, float bl_raw, float br_raw);
     void stop_motors();
