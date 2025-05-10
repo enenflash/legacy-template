@@ -13,3 +13,5 @@
 #define UL_ECHO 40
 #define UB_TRIG 5
 #define UB_ECHO 6
+
+#define DEBUG_LED 20

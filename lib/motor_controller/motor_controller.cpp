@@ -27,7 +27,7 @@ void MotorController::setup() {
 }
 
 array<float, 4> MotorController::get_motor_speeds(float speed, float angle, float rotation) {
-    Vector mv(cos(angle)*speed, sin(angle)*speed);
+    Vector mv = Vector::from_heading(angle, speed);
     float motor_ratio[4] = { 
         -mv.i - mv.j + rotation*this->rotation_const, 
         -mv.i + mv.j + rotation*this->rotation_const, 
@@ -44,7 +44,7 @@ array<float, 4> MotorController::get_motor_speeds(float speed, float angle, floa
             index = i;
         }
     }
-    float highest = motor_ratio[index];
+    float highest = abs(motor_ratio[index]);
     array<float, 4> motor_speeds = { 0, 0, 0, 0 };
     if (highest == 0) { // avoid zero division
         return motor_speeds;
@@ -58,9 +58,7 @@ array<float, 4> MotorController::get_motor_speeds(float speed, float angle, floa
 // speed 0->100, angle and rotation in radians
 void MotorController::run_motors(float speed, float angle, float rotation) {
     array<float, 4> motor_speeds = this->get_motor_speeds(speed, angle, rotation);
-    // for (int i = 0; i < 4; i++) {
-    //     cout << motor_speeds[i] << endl;
-    // }
+
     this->TL.run(motor_speeds[0]);
     this->TR.run(motor_speeds[1]);
     this->BL.run(motor_speeds[2]);
