@@ -6,7 +6,6 @@
 #include <iostream>
 #include <SparkFun_Qwiic_OTOS_Arduino_Library.h>
 #include "vector.hpp"
-using namespace std;
 
 class OTOS {
     private:

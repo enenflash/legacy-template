@@ -5,17 +5,15 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "pins.h"
 #include "vector.hpp"
 #include "motor_controller.hpp"
-// #include "position_system.hpp"
+#include "position_system.hpp"
 
 // declarations here
 void blinkLED();
 
-// PositionSystem pos_sys;
+PositionSystem pos_sys;
 MotorController motor_ctrl;
 
 void setup() {
@@ -23,6 +21,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(DEBUG_LED, OUTPUT);
 
+  // Motors
   pinMode(TL_PWM, OUTPUT);
   pinMode(TR_PWM, OUTPUT);
   pinMode(BL_PWM, OUTPUT);
@@ -38,12 +37,21 @@ void setup() {
   pinMode(BL_DIR, OUTPUT);
   pinMode(BR_DIR, OUTPUT);
 
-  // pos_sys.setup(); // pin definitions and bno055
+  // Ultrasonics (default no power)
+  pinMode(UL_TRIG, OUTPUT);
+  pinMode(UR_TRIG, OUTPUT);
+  pinMode(UB_TRIG, OUTPUT);
+  pinMode(UL_ECHO, INPUT);
+  pinMode(UR_ECHO, INPUT);
+  pinMode(UB_ECHO, INPUT);
+
+  pos_sys.setup(); // bno055
 }
 
 void loop() {
-  // pos_sys.update();
-  // Serial.println(pos_sys.get_tilt());
+  Serial.println("New loop");
+  pos_sys.update();
+  Serial.println(pos_sys.get_tilt());
   motor_ctrl.run_motors(100, 0, 0);
   digitalWrite(DEBUG_LED, HIGH);
 }

@@ -13,8 +13,6 @@
 #include "vector.hpp"
 #include "ultrasonic.hpp"
 
-using namespace std;
-
 class UltrasonicPS {
     private:
     Ultrasonic ult_left = Ultrasonic(UL_TRIG, UL_ECHO);

@@ -38,13 +38,7 @@ Vector PositionSystem::get_own_goal_vec() {
 void PositionSystem::setup() {
     this->bno_ok = this->bno.begin();
     this->bno.setExtCrystalUse(true);
-    
-    pinMode(UL_TRIG, OUTPUT);
-    pinMode(UR_TRIG, OUTPUT);
-    pinMode(UB_TRIG, OUTPUT);
-    pinMode(UL_ECHO, INPUT);
-    pinMode(UR_ECHO, INPUT);
-    pinMode(UB_ECHO, INPUT);
+    this->otos.set_up();
 }
 
 void PositionSystem::update() {
@@ -54,11 +48,11 @@ void PositionSystem::update() {
     this->tilt = event.orientation.x;
 
     // could potentially implement a method that uses both ultrasonics and otos
-    if (use_ult) {
+    if (this->use_ult) {
         this->ult_ps.update(this->tilt);
         this->posv = this->ult_ps.get_posv();
     }
-    if (use_otos) {
+    if (this->use_otos) {
         this->posv = this->otos.get_posv();
     }
 }

@@ -14,8 +14,6 @@
 #include "vector.hpp"
 #include "motor.hpp"
 
-using namespace std;
-
 class MotorController {
     public:
     Motor TL;
@@ -28,7 +26,7 @@ class MotorController {
     MotorController(float rotation_constant=1);
 
     private:
-    array<float, 4> get_motor_speeds(float angle, float speed, float rotation);
+    std::array<float, 4> get_motor_speeds(float angle, float speed, float rotation);
 
     public:
     void run_motors(float speed, float angle, float rotation);

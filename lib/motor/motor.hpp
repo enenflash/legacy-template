@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <Arduino.h>
-using namespace std;
 
 class Motor {
     public:

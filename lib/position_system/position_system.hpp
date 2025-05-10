@@ -10,8 +10,6 @@
 #include "otos.hpp"
 #include "ultrasonic_ps.hpp"
 
-using namespace std;
-
 class PositionSystem {
     private:
     Adafruit_BNO055 bno;

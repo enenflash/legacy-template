@@ -8,8 +8,6 @@
 #include <cmath>
 #include <string>
 
-using namespace std;
-
 class Vector {
     public:
     float i;
@@ -17,7 +15,7 @@ class Vector {
 
     Vector(float new_i=0, float new_j=0);
 
-    string display();
+    std::string display();
     float magnitude();
     float heading();
     Vector unit();
@@ -28,7 +26,7 @@ class Vector {
     static Vector from_heading(float heading, float magnitude) {
         return Vector(cos(heading)*magnitude, sin(heading)*magnitude);
     };
-    static Vector sum_vectors(vector<Vector> vec_list) {
+    static Vector sum_vectors(std::vector<Vector> vec_list) {
         float new_i = 0, new_j = 0;
         for (Vector vec : vec_list) {
             new_i += vec.i;

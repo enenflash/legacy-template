@@ -5,13 +5,13 @@ Vector::Vector(float new_i, float new_j) {
     this->j = new_j;
 }
 
-string Vector::display() {
-    string display_i = to_string(this->i), display_j = to_string(this->j);
+std::string Vector::display() {
+    std::string display_i = std::to_string(this->i), display_j = std::to_string(this->j);
     if ((int)this->i == this->i) {
-        display_i = to_string((int)this->i);
+        display_i = std::to_string((int)this->i);
     }
     if ((int)this->j == this->j) {
-        display_j = to_string((int)this->j);
+        display_j = std::to_string((int)this->j);
     }
     return "<"+display_i+", "+display_j+">";
 }
