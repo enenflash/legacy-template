@@ -1,5 +1,5 @@
-#ifndef _IR_HPP_
-#define _IR_HPP_
+#ifndef _IR_SENSOR_HPP_
+#define _IR_SENSOR_HPP_
 
 #pragma once
 
