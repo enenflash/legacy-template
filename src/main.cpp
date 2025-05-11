@@ -9,6 +9,7 @@
 #include "vector.hpp"
 #include "motor_controller.hpp"
 #include "position_system.hpp"
+#include "ir_sensor.hpp"
 
 // declarations here
 void blinkLED();
@@ -18,9 +19,13 @@ PositionSystem pos_sys;
 // 0.5 is how much the rotation is scaled compared to the movement
 MotorController motor_ctrl(0.5);
 
+IRSensor ir_sensor;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  Serial6.begin(115200); // IR Sensor
+
   pinMode(DEBUG_LED, OUTPUT);
 
   // Motors
@@ -56,15 +61,20 @@ void loop() {
   Serial.println(".");
   pos_sys.update(); // call every loop (it reads all the sensors)
   // look at lib/position_system/position_system.hpp for all methods
+  ir_sensor.update();
 
   float heading = pos_sys.get_heading(); // returns unit circle heading
   Vector posv = pos_sys.get_posv(); // note this is a custom class (uppercase) the cpp vector is lowercase
   // .display() returns std::string
   String posv_str = String(posv.display().c_str()); // must convert from std::string to String (arduino)
   
-  Serial.print(heading);
+  // Serial.print(heading);
+  // Serial.print(" ");
+  // Serial.println(posv_str);
+
+  Serial.print(ir_sensor.get_angle());
   Serial.print(" ");
-  Serial.println(posv_str);
+  Serial.println(ir_sensor.get_magnitude());
 
   // convert unit circle heading to rotation
   float rotation = heading;
