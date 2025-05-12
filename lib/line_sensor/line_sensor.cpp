@@ -1,29 +1,34 @@
 #include "line_sensor.hpp"
 
-bool LineSensor::read_serial(float result[2], int num_floats) {
+bool LineSensor::read_serial(float* result, int num_floats) {
     const size_t total_bytes = num_floats * sizeof(float);
-
+    if (!Serial2.available()) {
+        return false;
+    }
+    // Wait for 'e' header
+    char header = Serial2.read();
+    if (header != 'e') {
+        return false;
+    }
     // Wait until all float bytes are available
     unsigned long start = millis();
-    while (Serial2.read() != 'e' && Serial2.available() < total_bytes) {
-        if (millis() - start > 100) return false;
+    while (Serial2.available() < total_bytes) {
+        if (millis() - start > 100) return false; // timeout
     }
+
     byte* byte_ptr = (byte*)result;
     for (size_t i = 0; i < total_bytes; i++) {
         byte_ptr[i] = Serial2.read();
     }
-    return true;
+    return true; // success
 }
 
 void LineSensor::update() {
-    float result[2];
-    this->read_success = false;
-    if (Serial2.available()) {
-        this->read_success = this->read_serial(result, 4);
-    }
+    float data[2];
+    this->read_success = this->read_serial(data, 2);
     if (this->read_success) {
-        this->angle = result[0];
-        this->distance = result[1];
+        this->angle = data[0];
+        this->distance = data[1];
     }
 }
 

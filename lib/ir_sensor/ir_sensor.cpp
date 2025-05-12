@@ -1,12 +1,19 @@
 #include "ir_sensor.hpp"
 
-bool IRSensor::read_serial(float result[4], int num_floats) {
+bool IRSensor::read_serial(float* result, int num_floats) {
     const size_t total_bytes = num_floats * sizeof(float);
-
+    if (!Serial6.available()) {
+        return false;
+    }
+    // Wait for 'e' header
+    char header = Serial6.read();
+    if (header != 'e') {
+        return false;
+    }
     // Wait until all float bytes are available
     unsigned long start = millis();
-    while (Serial6.read() != 'e' && Serial6.available() < total_bytes) {
-        if (millis() - start > 100) return false;
+    while (Serial6.available() < total_bytes) {
+        if (millis() - start > 100) return false; // timeout
     }
     byte* byte_ptr = (byte*)result;
     for (size_t i = 0; i < total_bytes; i++) {
@@ -16,14 +23,11 @@ bool IRSensor::read_serial(float result[4], int num_floats) {
 }
 
 void IRSensor::update() {
-    float result[4];
-    this->read_success = false;
-    if (Serial6.available()) {
-        this->read_success = this->read_serial(result, 4);
-    }
+    float data[4];
+    this->read_success = this->read_serial(data, 4);
     if (this->read_success) {
-        this->angle = result[0];
-        this->magnitude = result[1];
+        this->angle = data[0];
+        this->magnitude = data[1];
     }
 }
 

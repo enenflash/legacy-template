@@ -76,13 +76,13 @@ void loop() {
   // Serial.print(" ");
   // Serial.println(posv_str);
 
-  // Serial.print(ir_sensor.get_angle());
-  // Serial.print(" ");
-  // Serial.println(ir_sensor.get_magnitude());
-
-  Serial.print(line_sensor.get_angle());
+  Serial.print(ir_sensor.get_angle());
   Serial.print(" ");
-  Serial.println(line_sensor.get_distance());
+  Serial.println(ir_sensor.get_magnitude());
+
+  // Serial.print(line_sensor.get_angle());
+  // Serial.print(" ");
+  // Serial.println(line_sensor.get_distance());
 
   // convert unit circle heading to rotation
   float rotation = heading;
