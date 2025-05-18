@@ -76,7 +76,7 @@ void loop() {
   // Serial.print(" ");
   // Serial.println(posv_str);
 
-  Serial.print(ir_sensor.get_angle());
+  Serial.print(ir_sensor.get_angle()*180/PI);
   Serial.print(" ");
   Serial.println(ir_sensor.get_magnitude());
 
@@ -92,7 +92,7 @@ void loop() {
   rotation *= -1;
   // idk where to put this code so it is here for now
 
-  motor_ctrl.run_motors(50, PI/2, rotation); // run motors 50 speed, angle 0 radians
+  motor_ctrl.run_motors(50, PI/2-(heading*PI/180), rotation); // run motors 50 speed, angle 0 radians
   // motor_ctrl.run_raw(-100, -100, 100, 100); // run motors raw
   // motor_ctrl.stop_motors(); // stop all motors
   digitalWrite(DEBUG_LED, HIGH);
