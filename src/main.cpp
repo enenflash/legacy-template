@@ -23,6 +23,8 @@ MotorController motor_ctrl(0.5);
 IRSensor ir_sensor;
 LineSensor line_sensor;
 
+bool headless = true;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -92,7 +94,11 @@ void loop() {
   rotation *= -1;
   // idk where to put this code so it is here for now
 
-  motor_ctrl.run_motors(50, PI/2-(heading*PI/180), rotation); // run motors 50 speed, angle 0 radians
+  // headless is 'rotation matrix'
+  float mv_angle = PI/2;
+  if (headless) mv_angle -= heading*PI/180;
+
+  motor_ctrl.run_motors(50, mv_angle, rotation); // run motors 50 speed, angle (radians), rotation
   // motor_ctrl.run_raw(-100, -100, 100, 100); // run motors raw
   // motor_ctrl.stop_motors(); // stop all motors
   digitalWrite(DEBUG_LED, HIGH);
