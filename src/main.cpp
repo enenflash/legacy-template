@@ -4,7 +4,7 @@
 #include <Adafruit_BNO055.h>
 
 #include <iostream>
-
+#include <cmath>
 #include "pins.h"
 #include "vector.hpp"
 #include "motor_controller.hpp"
@@ -59,6 +59,13 @@ void setup() {
   pinMode(UR_ECHO, INPUT);
   pinMode(UB_ECHO, INPUT);
 
+  // set up the buttons
+  pinMode(BTN_1, INPUT_PULLDOWN);  // has to pull down
+  pinMode(BTN_2, INPUT_PULLDOWN);
+  pinMode(BTN_3, INPUT_PULLDOWN);
+  pinMode(BTN_4, INPUT_PULLDOWN);
+  pinMode(BTN_5, INPUT_PULLDOWN);
+
   pos_sys.setup(); // bno055
 }
 
@@ -70,6 +77,10 @@ void loop() {
   line_sensor.update();
 
   float heading = pos_sys.get_heading(); // returns unit circle heading
+
+  float ball_angle = fmodf(PI + ir_sensor.get_angle() + heading * PI / 180, 2 * PI) - PI; // use this for the ball's absolute ngle
+  float line_angle = fmodf(PI + line_sensor.get_angle() + heading * PI / 180, 2 * PI) - PI; // use this for the line's absolute angle
+
   Vector posv = pos_sys.get_posv(); // note this is a custom class (uppercase) the cpp vector is lowercase
   // .display() returns std::string
   String posv_str = String(posv.display().c_str()); // must convert from std::string to String (arduino)
@@ -78,9 +89,9 @@ void loop() {
   // Serial.print(" ");
   // Serial.println(posv_str);
 
-  Serial.print(ir_sensor.get_angle()*180/PI);
+  Serial.print(ball_angle);
   Serial.print(" ");
-  Serial.println(ir_sensor.get_magnitude());
+  Serial.println(line_angle);
 
   // Serial.print(line_sensor.get_angle());
   // Serial.print(" ");
