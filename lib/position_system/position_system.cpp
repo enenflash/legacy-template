@@ -45,7 +45,7 @@ void PositionSystem::update() {
     // get tilt from BNO or get tilt from parameter
     sensors_event_t event;
     this->bno.getEvent(&event);
-    this->heading = 360-event.orientation.x;
+    this->heading = (360-event.orientation.x)*PI/180;
 
     // could potentially implement a method that uses both ultrasonics and otos
     if (this->use_ult) {

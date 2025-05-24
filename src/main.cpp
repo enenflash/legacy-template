@@ -77,7 +77,7 @@ void loop() {
   ir_sensor.update();
   line_sensor.update();
 
-  float heading = pos_sys.get_heading() * PI/180; // returns unit circle heading
+  float heading = pos_sys.get_heading(); // returns unit circle heading in radians
 
   if (angle_correction) {
     ir_sensor.angle_correction(heading);
@@ -121,9 +121,9 @@ void blinkLED() {
 // corrects robot heading
 // heading in radians
 float get_rotation(float heading) {
-  float rotation = heading * 180/PI;
-  if (rotation > 180) {
-    rotation -= 360;
+  float rotation = heading;
+  if (rotation > PI) {
+    rotation -= 2*PI;
   }
   rotation *= -1;
   return rotation;
