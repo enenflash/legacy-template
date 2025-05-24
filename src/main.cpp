@@ -83,9 +83,6 @@ void loop() {
     ir_sensor.angle_correction(heading);
     line_sensor.angle_correction(heading);
   }
-  
-  float ball_angle = ir_sensor.get_angle();
-  float line_angle = line_sensor.get_angle();
 
   Vector posv = pos_sys.get_posv(); // note this is a custom class (uppercase) the cpp vector is lowercase
   // .display() returns std::string
@@ -95,9 +92,9 @@ void loop() {
   // Serial.print(" ");
   // Serial.println(posv_str);
 
-  Serial.print(ball_angle);
+  Serial.print(ir_sensor.get_angle());
   Serial.print(" ");
-  Serial.println(line_angle);
+  Serial.println(ir_sensor.get_magnitude());
 
   // Serial.print(line_sensor.get_angle());
   // Serial.print(" ");
