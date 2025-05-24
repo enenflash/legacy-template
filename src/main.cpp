@@ -14,6 +14,7 @@
 
 // declarations here
 void blinkLED();
+float get_rotation(float heading);
 
 PositionSystem pos_sys;
 
@@ -23,7 +24,7 @@ MotorController motor_ctrl(0.5);
 IRSensor ir_sensor;
 LineSensor line_sensor;
 
-bool headless = true;
+bool angle_correction = true;
 
 void setup() {
   // put your setup code here, to run once:
@@ -76,10 +77,15 @@ void loop() {
   ir_sensor.update();
   line_sensor.update();
 
-  float heading = pos_sys.get_heading(); // returns unit circle heading
+  float heading = pos_sys.get_heading() * PI/180; // returns unit circle heading
 
-  float ball_angle = fmodf(PI + ir_sensor.get_angle() + heading * PI / 180, 2 * PI) - PI; // use this for the ball's absolute ngle
-  float line_angle = fmodf(PI + line_sensor.get_angle() + heading * PI / 180, 2 * PI) - PI; // use this for the line's absolute angle
+  if (angle_correction) {
+    ir_sensor.angle_correction(heading);
+    line_sensor.angle_correction(heading);
+  }
+  
+  float ball_angle = ir_sensor.get_angle();
+  float line_angle = line_sensor.get_angle();
 
   Vector posv = pos_sys.get_posv(); // note this is a custom class (uppercase) the cpp vector is lowercase
   // .display() returns std::string
@@ -97,19 +103,11 @@ void loop() {
   // Serial.print(" ");
   // Serial.println(line_sensor.get_distance());
 
-  // convert unit circle heading to rotation
-  float rotation = heading;
-  if (rotation > 180) {
-    rotation -= 360;
-  }
-  rotation *= -1;
-  // idk where to put this code so it is here for now
-
-  // headless is 'rotation matrix'
+  // angle_correction is 'rotation matrix'
   float mv_angle = PI/2;
-  if (headless) mv_angle -= heading*PI/180;
+  if (angle_correction) mv_angle -= heading*PI/180;
 
-  motor_ctrl.run_motors(50, mv_angle, rotation); // run motors 50 speed, angle (radians), rotation
+  motor_ctrl.run_motors(50, mv_angle, get_rotation(heading)); // run motors 50 speed, angle (radians), rotation
   // motor_ctrl.run_raw(-100, -100, 100, 100); // run motors raw
   // motor_ctrl.stop_motors(); // stop all motors
   digitalWrite(DEBUG_LED, HIGH);
@@ -121,4 +119,15 @@ void blinkLED() {
   delay(100);
   digitalWrite(DEBUG_LED, LOW);
   delay(100);
+}
+
+// corrects robot heading
+// heading in radians
+float get_rotation(float heading) {
+  float rotation = heading * 180/PI;
+  if (rotation > 180) {
+    rotation -= 360;
+  }
+  rotation *= -1;
+  return rotation;
 }

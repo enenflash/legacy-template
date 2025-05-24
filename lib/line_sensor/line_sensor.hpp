@@ -13,6 +13,7 @@ class LineSensor {
     bool read_success;
     bool read_serial(float* result, int num_floats);
     void update(); // call update every loop to read serial
+    void angle_correction(float heading);
     float get_distance();
     float get_angle();
 };

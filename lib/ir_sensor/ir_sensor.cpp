@@ -31,6 +31,11 @@ void IRSensor::update() {
     }
 }
 
+// heading in radians
+void IRSensor::angle_correction(float heading) {
+    this->angle = fmodf(this->angle + heading, 2*PI);
+}
+
 float IRSensor::get_magnitude() {
     return this->magnitude;
 }

@@ -32,6 +32,11 @@ void LineSensor::update() {
     }
 }
 
+// heading in radians
+void LineSensor::angle_correction(float heading) {
+    this->angle = fmodf(this->angle + heading, 2*PI);
+}
+
 float LineSensor::get_distance() {
     return std::round(this->distance*1000)/1000;
 }
