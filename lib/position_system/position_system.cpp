@@ -35,6 +35,10 @@ Vector PositionSystem::get_own_goal_vec() {
     return this->get_relative_to(this->own_goal_posv);
 }
 
+void PositionSystem::set_pos(Vector posv, float heading) {
+    this->otos.set_pos(posv.i, posv.j, heading);
+}
+
 void PositionSystem::setup() {
     this->bno_ok = this->bno.begin();
     this->bno.setExtCrystalUse(true);

@@ -37,6 +37,8 @@ class PositionSystem {
     Vector get_opp_goal_vec();
     Vector get_own_goal_vec();
 
+    void set_pos(Vector posv, float heading);
+
     bool check_bno_ok();
     void setup();
     void update();
