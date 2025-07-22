@@ -1,28 +1,40 @@
+#include <iostream>
+#include <cmath>
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
+#include <SoftwareSerial.h>
 
-#include <iostream>
-#include <cmath>
 #include "pins.h"
 #include "vector.hpp"
 #include "motor_controller.hpp"
 #include "position_system.hpp"
 #include "ir_sensor.hpp"
 #include "line_sensor.hpp"
+#include "dribbler.hpp"
+#include "bluetooth.hpp"
+#include "pid.hpp"
+
+#include <SPI.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
 // declarations here
 void blinkLED();
 float get_rotation(float heading);
 
-PositionSystem pos_sys;
-
-// 0.5 is how much the rotation is scaled compared to the movement
-MotorController motor_ctrl(0.5);
-
 IRSensor ir_sensor;
 LineSensor line_sensor;
+PositionSystem pos_sys;
+
+MotorController motor_ctrl(20);
+DribblerMotor dribbler(DR_DIR, DR_PWM);
+Adafruit_SSD1306 display(128, 32, &Wire, -1);
+
+Bluetooth bluetooth_comm;
+
+PID movement_pid;
 
 bool angle_correction = true;
 
